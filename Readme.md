@@ -7,8 +7,8 @@ A few extra packages and a yum update will be run before the OVA is created.
 We assume you have VirtualBox and Hashicorp Packer installed.
 
 Tested with the following:
-Packer v1.6.6
-VirtualBox v6.1
+* Packer v1.6.6
+* VirtualBox v6.1
 
 You'll need to provide a URL to an appropriate CentOS7 ISO file. I put one in the root of this repo clone.
 * Set the PACKER_ISO_PATH to point to that ISO:
@@ -22,8 +22,9 @@ An checksum of the ISO is also required.
 
 You'll have to provide the Guest Additions ISO yourself.
 I found mine on the XCP-ng hypervisor at /opt/xensource/packages/iso/guest-tools-7.45.0-2.xcpng8.1.iso
-Set the PACKER_GUEST_ISO_PATH environment variable:
+* Set the PACKER_GUEST_ISO_PATH environment variable:
 >export PACKER_GUEST_ISO_PATH=/path/to/filename.iso
+>export PACKER_GUEST_ISO_FILE=$(echo $PACKER_GUEST_ISO_PATH | awk -F/ '{print $NF}')
 
-Build the VM OVA
+* Build the VM OVA
 >packer build centos7_minimal.json

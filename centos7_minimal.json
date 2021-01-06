@@ -43,20 +43,21 @@
   "variables": {
     "checksum": "{{env `PACKER_ISO_MD5SUM`}}",
     "iso": "{{env `PACKER_ISO_URL`}}",
-    "guest_iso": "{{env `PACKER_GUEST_ISO_PATH`}}"
+    "guest_iso_fullpath": "{{env `PACKER_GUEST_ISO_PATH`}}",
+    "guest_iso_file": "{{env `PACKER_GUEST_ISO_FILE`}}"
   },
   "provisioners": [
     {
       "type": "file",
-      "source": "{{user `guest_iso`}}",
-      "destination": "/var/tmp/{{user `guest_iso`}}"
+      "source": "{{user `guest_iso_fullpath`}}",
+      "destination": "/var/tmp/{{user `guest_iso_file`}}"
     },
     {
       "type": "shell",
       "inline": [
-        "cd /var/tmp && mount -o ro {{user `guest_iso`}} /mnt",
+        "cd /var/tmp && mount -o ro {{user `guest_iso_file`}} /mnt",
         "cd /mnt/Linux && ./install.sh; cd",
-        "umount /mnt && rm /var/tmp/{{user `guest_iso`}}",
+        "umount /mnt && rm /var/tmp/{{user `guest_iso_file`}}",
         "yum -y install net-tools yum-utils python2 sysstat",
         "yum -y update"
       ]
