@@ -1,0 +1,65 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "disk_size": "20480",
+      "guest_os_type": "RedHat_64",
+      "http_directory": "http",
+      "iso_checksum": "md5:{{ user `checksum` }}",
+      "iso_url": "{{ user `iso` }}",
+      "shutdown_command": "/sbin/halt -p",
+      "ssh_password": "packer",
+      "ssh_port": 22,
+      "ssh_timeout": "600s",
+      "ssh_username": "root",
+      "type": "virtualbox-iso",
+      "guest_additions_mode": "disable",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "1024"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "2"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--audio",
+          "none"
+        ]
+      ],
+      "vm_name": "CentOS7-minimal",
+      "format": "ova"
+    }
+  ],
+  "variables": {
+    "checksum": "{{env `PACKER_ISO_MD5SUM`}}",
+    "iso": "{{env `PACKER_ISO_URL`}}",
+    "guest_iso": "{{env `PACKER_GUEST_ISO_PATH`}}"
+  },
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "{{user `guest_iso`}}",
+      "destination": "/var/tmp/{{user `guest_iso`}}"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "cd /var/tmp && mount -o ro {{user `guest_iso`}} /mnt",
+        "cd /mnt/Linux && ./install.sh; cd",
+        "umount /mnt && rm /var/tmp/{{user `guest_iso`}}",
+        "yum -y install net-tools yum-utils python2 sysstat",
+        "yum -y update"
+      ]
+    }
+  ]
+}
