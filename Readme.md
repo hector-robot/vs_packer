@@ -1,8 +1,11 @@
 ## Basic Packer w/CentOS7 and Virtualbox
 
+* Why?
+This is a work around since the current packer module for XenServer/XCP-ng doesn't support the VNC protocol on the most recent version of the hypervisor. After you get an OVA you have to import it to the XenServer/XCP-ng environment manually and rebuild the initramfs. Then you can use it as a template in XenServer/XCP-ng.
+
 This should create an OVA output of a fairly minimal VM instance w/XCP-ng Guest Extensions installed.
 
-A few extra packages and a yum update will be run before the OVA is created.
+A few extra packages will be installed and a yum update will be run before the OVA is created.
 
 We assume you have VirtualBox and Hashicorp Packer installed.
 
