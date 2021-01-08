@@ -41,16 +41,43 @@
     }
   ],
   "variables": {
-    "checksum": "{{env `PACKER_ISO_MD5SUM`}}",
-    "iso": "{{env `PACKER_ISO_URL`}}",
+    "checksum":           "{{env `PACKER_ISO_MD5SUM`}}",
+    "iso":                "{{env `PACKER_ISO_URL`}}",
     "guest_iso_fullpath": "{{env `PACKER_GUEST_ISO_PATH`}}",
-    "guest_iso_file": "{{env `PACKER_GUEST_ISO_FILE`}}"
+    "guest_iso_file":     "{{env `PACKER_GUEST_ISO_FILE`}}",
+    "consul_zip_file":    "{{env `PACKER_CONSUL_ZIP_FILE`}}",
+    "consul_join_ip1":    "{{env `CONSUL_JOIN_IP1`}}",
+    "consul_join_ip2":    "{{env `CONSUL_JOIN_IP2`}}",
+    "consul_join_ip3":    "{{env `CONSUL_JOIN_IP3`}}",
+    "consul_enc_key":     "{{env `CONSUL_ENC_KEY`}}",
+    "consul_token":       "{{env `CONSUL_TOKEN`}}",
+    "consul_domain":      "{{env `CONSUL_DOMAIN`}}"
   },
   "provisioners": [
     {
       "type": "file",
       "source": "{{user `guest_iso_fullpath`}}",
-      "destination": "/var/tmp/{{user `guest_iso_file`}}"
+      "destination": "/var/tmp/"
+    },
+    {
+      "type": "file",
+      "source": "./{{user `consul_zip_file`}}",
+      "destination": "/var/tmp/"
+    },
+    {
+      "type": "file",
+      "source": "/home/ian/vs_packer/discovery_init.bash",
+      "destination": "/var/tmp/"
+    },
+    {
+      "type": "file",
+      "source": "/home/ian/vs_packer/consul_host_service_create.bash",
+      "destination": "/usr/local/bin/"
+    },
+    {
+      "type": "file",
+      "source": "/home/ian/vs_packer/local_CA.crt",
+      "destination": "/etc/ssl/certs/"
     },
     {
       "type": "shell",
@@ -58,8 +85,16 @@
         "cd /var/tmp && mount -o ro {{user `guest_iso_file`}} /mnt",
         "cd /mnt/Linux && ./install.sh; cd",
         "umount /mnt && rm /var/tmp/{{user `guest_iso_file`}}",
-        "yum -y install net-tools yum-utils python2 sysstat",
-        "yum -y update"
+        "yum -y install net-tools yum-utils python2 sysstat openssl unzip",
+        "cd /usr/local/bin && unzip /var/tmp/{{user `consul_zip_file`}}",
+        "chmod +x /var/tmp/discovery_init.bash",
+        "export CONSUL_JOIN_IP1={{user `consul_join_ip1`}}",
+        "export CONSUL_JOIN_IP2={{user `consul_join_ip2`}}",
+        "export CONSUL_JOIN_IP3={{user `consul_join_ip3`}}",,
+        "export CONSUL_ENC_KEY=\"{{user `consul_enc_key`}}\"",
+        "export CONSUL_TOKEN={{user `consul_token`}}",
+        "export CONSUL_DOMAIN={{user `consul_domain`}}",
+        "/var/tmp/discovery_init.bash"
       ]
     }
   ]
