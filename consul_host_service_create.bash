@@ -10,8 +10,7 @@ cat <<EOF > /consul/config/host_service.json
         "tags": [
             "host",
             "xcp-ng-vm"
-        ],
-        "deregister_critical_service_after": "30s"
+        ]
     }
 }
 EOF
