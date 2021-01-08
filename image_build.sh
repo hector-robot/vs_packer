@@ -14,7 +14,7 @@ CONSUL_DOMAIN="consul"
 PACKER_ISO_FILE="/full/path/to/os_installer.iso"
 PACKER_GUEST_ISO_PATH="/full/path/to/guest.iso"
 
-PACKER_CONSUL_ZIP_FILE
+PACKER_CONSUL_ZIP_FILE="/full/path/to/consul.zip"
 
 #Derived VARs
 PACKER_ISO_URL="file:$PACKER_ISO_FILE"

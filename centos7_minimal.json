@@ -90,7 +90,7 @@
         "chmod +x /var/tmp/discovery_init.bash",
         "export CONSUL_JOIN_IP1={{user `consul_join_ip1`}}",
         "export CONSUL_JOIN_IP2={{user `consul_join_ip2`}}",
-        "export CONSUL_JOIN_IP3={{user `consul_join_ip3`}}",,
+        "export CONSUL_JOIN_IP3={{user `consul_join_ip3`}}",
         "export CONSUL_ENC_KEY=\"{{user `consul_enc_key`}}\"",
         "export CONSUL_TOKEN={{user `consul_token`}}",
         "export CONSUL_DOMAIN={{user `consul_domain`}}",
