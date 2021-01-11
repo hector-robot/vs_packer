@@ -36,7 +36,7 @@
           "none"
         ]
       ],
-      "vm_name": "CentOS7-minimal",
+      "vm_name": "cos7-packed",
       "format": "ova"
     }
   ],
@@ -54,7 +54,8 @@
     "consul_token":         "{{env `CONSUL_TOKEN`}}",
     "consul_domain":        "{{env `CONSUL_DOMAIN`}}",
     "current_dir":          "{{env `CURRENT_DIR`}}",
-    "consul_ca_cert":       "{{env `CONSUL_CA_CERT`}}"
+    "consul_ca_cert":       "{{env `CONSUL_CA_CERT`}}",
+    "ansible_keys_path":    "{{env `PACKER_ANSIBLE_KEYS_PATH`}}"
   },
   "provisioners": [
     {
@@ -83,6 +84,11 @@
       "destination": "/etc/ssl/certs/"
     },
     {
+      "type":"file",
+      "source": "{{user `ansible_keys_path`}}",
+      "destination": "/var/tmp/ansible_keys"
+    },
+    {
       "type": "shell",
       "inline": [
         "cd /var/tmp && mount -o ro {{user `guest_iso_file`}} /mnt",
@@ -97,7 +103,11 @@
         "export CONSUL_ENC_KEY=\"{{user `consul_enc_key`}}\"",
         "export CONSUL_TOKEN={{user `consul_token`}}",
         "export CONSUL_DOMAIN={{user `consul_domain`}}",
-        "/var/tmp/discovery_init.bash"
+        "/var/tmp/discovery_init.bash",
+        "useradd -r -m ansible",
+        "echo \"ansible ALL=(ALL) NOPASSWD: ALL\" > /etc/sudoers.d/10-ansible",
+        "cd ~ansible && mkdir .ssh && chmod 700 .ssh && chown ansible:ansible .ssh",
+        "mv /var/tmp/ansible_keys ~ansible/.ssh/authorized_keys && chmod 600 ~ansible/.ssh/authorized_keys && chown ansible:ansible ~ansible/.ssh/authorized_keys"
       ]
     }
   ]

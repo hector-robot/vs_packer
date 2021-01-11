@@ -7,17 +7,17 @@ export CONSUL_JOIN_IP1=x.x.x.x
 export CONSUL_JOIN_IP2=x.x.x.x
 export CONSUL_JOIN_IP3=x.x.x.x
 
-export CONSUL_ENC_KEY="Consul-GOSSIP-enc-key-her"
-export CONSUL_TOKEN="Consul-default-token"
+export CONSUL_ENC_KEY="encryption-key"
+export CONSUL_TOKEN="consule-token"
 export CONSUL_DOMAIN="consul"
 
-export PACKER_ISO_FILE="/full/path/to/OS.iso"
-export PACKER_GUEST_ISO_PATH="/full/path/to/guest-additions.iso"
-
-export PACKER_CONSUL_ZIP_PATH="/full/path/to/consul.zip"
+export PACKER_ISO_FILE="/full/path/to/os_installer.iso"
+export PACKER_GUEST_ISO_PATH="/full/path/to/guest-tools.iso"
+export PACKER_CONSUL_ZIP_PATH="/full/path/consul/binary.zip"
+export PACKER_ANSIBLE_KEYS_PATH="/full/path/to/ansible/authorized_keys"
 
 #CA Cert file should be in the current working directory
-export CONSUL_CA_CERT="local-ca-cert-file"
+export CONSUL_CA_CERT="cert_file.crt"
 
 #Derived VARs
 export PACKER_ISO_URL="file:$PACKER_ISO_FILE"
