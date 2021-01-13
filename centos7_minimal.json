@@ -81,7 +81,7 @@
     {
       "type": "file",
       "source": "{{user `current_dir`}}/{{user `consul_ca_cert`}}",
-      "destination": "/etc/ssl/certs/"
+      "destination": "/etc/ssl/certs/local_CA.crt"
     },
     {
       "type":"file",
