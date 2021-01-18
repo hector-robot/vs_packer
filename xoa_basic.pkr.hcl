@@ -17,6 +17,7 @@ locals {
   discovery_init_fullpath = vault("/secret/data/packer_build/xoa_basic", "discovery_init_fullpath")
   consul_service_fullpath = vault("/secret/data/packer_build/xoa_basic", "consul_service_fullpath")
   ansible_keys_fullpath = vault("/secret/data/packer_build/xoa_basic", "ansible_keys_fullpath")
+  root_passwd = vault("/secret/data/packer_build/xoa_basic", "root_passwd")
 }
 
 source "virtualbox-iso" "xoa_basic" {
@@ -29,7 +30,7 @@ source "virtualbox-iso" "xoa_basic" {
     disk_size = 20480
     http_directory = "http"
     shutdown_command = "/sbin/halt -p"
-    ssh_password = "packer"
+    ssh_password = local.root_passwd
     ssh_port = 22
     ssh_timeout = "600s"
     ssh_username = "root"
