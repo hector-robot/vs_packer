@@ -36,8 +36,8 @@ source "virtualbox-iso" "xoa_basic" {
     ssh_username = "root"
     guest_additions_mode = "disable"
     vboxmanage = [
-      [ "modifyvm", "{{.Name}}", "--memory", "1024" ],
-      [ "modifyvm", "{{.Name}}", "--cpus", "2" ],
+      [ "modifyvm", "{{.Name}}", "--memory", local.memory_size ],
+      [ "modifyvm", "{{.Name}}", "--cpus", local.cpus ],
       [ "modifyvm", "{{.Name}}", "--audio", "none" ]
     ]
   }
